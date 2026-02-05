@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- 👇 THIS LINE GOES HERE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DR AC</title>
+
+    <style>
+        /* your CSS here */
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DR AC</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #e9f4ff;
+    text-align: center;
+}
+
+.page { display: none; padding: 40px; }
+.active { display: block; }
+
+.box {
+    background: white;
+    max-width: 500px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 6px;
+}
+
+button {
+    padding: 10px;
+    margin-top: 10px;
+    width: 100%;
+    background: #007acc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back {
+    background: #777;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page active">
+    <div class="box">
+        <h2>DR AC</h2>
+        <p>Universal Air Conditioner</p>
+        <button onclick="goToPage2()">Register Complaint</button>
+        <button onclick="openAdmin()">Admin Login</button>
+    </div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+    <div class="box">
+        <h3>Submit Complaint</h3>
+
+        <input id="district" placeholder="District">
+        <input id="address" placeholder="Address">
+        <input id="contact" placeholder="Contact">
+        <textarea id="complaint" placeholder="Complaint"></textarea>
+
+        <button onclick="submitComplaint()">Submit</button>
+        <button class="back" onclick="goHome()">⬅ Back</button>
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="page">
+    <div class="box">
+        <h3>Thank You</h3>
+        <p>Your complaint is registered.</p>
+        <button onclick="goHome()">⬅ Back to Home</button>
+    </div>
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="admin" class="page">
+    <div class="box">
+        <h3>Admin – Complaint List</h3>
+        <table id="table">
+            <tr>
+                <th>District</th>
+                <th>Address</th>
+                <th>Contact</th>
+                <th>Complaint</th>
+            </tr>
+        </table>
+        <button class="back" onclick="goHome()">⬅ Back to Home</button>
+    </div>
+</div>
+
+<script>
+function goToPage2() {
+    show("page2");
+}
+
+function goHome() {
+    show("page1");
+}
+
+function submitComplaint() {
+    let data = {
+        district: district.value,
+        address: address.value,
+        contact: contact.value,
+        complaint: complaint.value
+    };
+
+    let list = JSON.parse(localStorage.getItem("complaints") || "[]");
+    list.push(data);
+    localStorage.setItem("complaints", JSON.stringify(list));
+
+    show("page3");
+}
+
+function openAdmin() {
+    let pass = prompt("Enter Admin Password");
+    if (pass === "admin123") {
+        show("admin");
+        loadComplaints();
+    } else {
+        alert("Wrong password");
+    }
+}
+
+function loadComplaints() {
+    let list = JSON.parse(localStorage.getItem("complaints") || "[]");
+    let table = document.getElementById("table");
+
+    table.innerHTML = `
+        <tr>
+            <th>District</th>
+            <th>Address</th>
+            <th>Contact</th>
+            <th>Complaint</th>
+        </tr>
+    `;
+
+    list.forEach(c => {
+        let row = table.insertRow();
+        row.insertCell().innerText = c.district;
+        row.insertCell().innerText = c.address;
+        row.insertCell().innerText = c.contact;
+        row.insertCell().innerText = c.complaint;
+    });
+}
+
+function show(id) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
